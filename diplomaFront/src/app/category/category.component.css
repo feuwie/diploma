@@ -1,0 +1,32 @@
+.all {
+    padding: 20px 135px 20px 135px;
+    background-color: #F6F6F6;
+    font-family: GTEestiProBook;
+}
+
+.bold_text {
+    font-weight: 900;
+}
+
+.card {
+    text-align: center;
+    margin: 0 30px 10px 30px;
+}
+
+.filter {
+    background-color: white;
+    border: 1px solid #DFDFDF;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.btn_add {
+    padding: 10px;
+    font-size: 13px;
+    width: 100%;
+    margin-bottom: 10px;
+    background-color: #5A7BD0;
+    color: white;
+    border-radius: 5px;
+    outline: none;
+}

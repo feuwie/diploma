@@ -1,0 +1,16 @@
+<body>
+  <div class="row all">
+    <div class="col-sm-12">
+      <p><a routerLink="">goods</a> - Каталог</p>
+    </div>
+    <div class="col-sm-12">
+      <p class="bold_text">Каталог</p>
+    </div>
+    <div class="row">
+      <div *ngFor="let category of receivedCategories" class="col-sm-4 card" style="text-align: center;">
+        <img src="{{ category.categoryImg }}" alt="img" width="150" height="150"><br>
+        <a routerLink="/category/{{ category.categoryId }}">{{ category.categoryTitle }}</a>
+      </div>
+    </div>
+  </div>
+</body>

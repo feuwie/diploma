@@ -1,0 +1,15 @@
+.all {
+    padding: 20px 135px 20px 135px;
+    background-color: #F6F6F6;
+    font-family: GTEestiProBook;
+}
+
+.btn {
+    padding: 20px;
+    font-size: 13px;
+    margin-bottom: 10px;
+    background-color: #5A7BD0;
+    color: white;
+    border-radius: 5px;
+    outline: none;
+}
