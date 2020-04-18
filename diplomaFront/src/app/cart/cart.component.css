@@ -1,0 +1,76 @@
+.all {
+    padding: 20px 135px 20px 135px;
+    background-color: #F6F6F6;
+    font-family: GTEestiProBook;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+.to_fav {
+    color: #5A7BD0;
+}
+
+.from_fav {
+    color: palevioletred
+}
+
+.prod {
+    display: flex;
+    margin-bottom: 50px;
+}
+
+.rows {
+    display: flex;
+    text-align: left;
+}
+
+.proceed {
+    text-align: center;
+    background-color: white;
+    border: 1px solid #DFDFDF;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px;
+}
+
+.bold_text {
+    font-weight: 900;
+}
+
+.btn_proceed {
+    padding: 20px;
+    width: 100%;
+    margin-bottom: 10px;
+    background-color: #5A7BD0;
+    color: white;
+    border-radius: 5px;
+    outline: none;
+}
+
+.btn_catalog {
+    padding: 20px;
+    font-size: 13px;
+    width: 100%;
+    margin-bottom: 10px;
+    background-color: #5A7BD0;
+    color: white;
+    border-radius: 5px;
+    outline: none;
+}
+
+.btn_add {
+    padding: 8px;
+    font-size: 13px;
+    border: 1px solid #5A7BD0;
+    color: #5A7BD0;
+    outline: none;
+    margin-left: 10px;
+}
+
+input {
+    height: 38px;
+    outline: none;
+}

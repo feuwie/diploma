@@ -1,0 +1,12 @@
+@font-face {
+  font-family: "GTEestiProBook";
+  src: url("../fonts/GTEestiProText-Book.woff2") format("woff2");
+}
+
+* {
+  font-family: GTEestiProBook;
+  font-size: 14px;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

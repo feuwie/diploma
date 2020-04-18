@@ -15,7 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 public interface CartRepository extends JpaRepository<Cart, Long> {
     List<Cart> findByUserEmail(String email);
 
+    List<Cart> findAllByUserEmail(String email);
+
     Cart findByCartIdAndUserEmail(int cartId, String email);
+
+    void deleteAllByUserEmail(String email);
 
     void deleteByCartIdAndUserEmail(int cartId, String email);
 

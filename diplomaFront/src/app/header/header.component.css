@@ -1,0 +1,75 @@
+a {
+    color: black;
+    text-decoration: none;
+}
+
+.row {
+    padding: 5px 135px 5px 135px;
+    border-bottom: 2px solid #EFEFEF;
+}
+
+
+.mainlogo {
+    height: 80px;
+}
+
+.header div {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.search {
+    width: 100%;
+    position: relative;
+}
+
+.searchTerm {
+    width: 100%;
+    border: 1px solid rgb(200, 200, 200);
+    border-right: none;
+    padding: 5px;
+    height: 20px;
+    outline: none;
+    color: black;
+    height: 48px;
+}
+
+.searchButton {
+    width: 50px;
+    height: 48px;
+    border: 1px solid rgb(200, 200, 200);
+    background: white;
+    text-align: center;
+    color: rgb(200, 200, 200);
+    font-size: 14px;
+    padding-left: 8px;
+    padding-top: 5px;
+    outline: none;
+}
+
+button {
+    background-color: #5A7BD0;
+    border: none;
+    outline: none;
+}
+
+.shop {
+    border: 2px solid #5A7BD0;
+    border-radius: 5px;
+    height: 50px;
+    background-color: #5A7BD0;
+    padding: 10px;
+    margin: 10px;
+}
+
+.nav {
+    text-align: center;
+    padding-top: 20px;
+}
+
+
+.catalog_ic {
+    color: white;
+    padding-right: 10px;
+}

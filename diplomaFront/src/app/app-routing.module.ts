@@ -16,6 +16,8 @@ import { CatalogComponent } from './catalog/catalog.component';
 import { SearchComponent } from './search/search.component';
 import { ProductComponent } from './product/product.component';
 import { CartComponent } from './cart/cart.component';
+import { OrderComponent } from './order/order.component';
+import { SuccessOrderComponent } from './success-order/success-order.component';
 // import { CartComponent } from './cart/cart.component';
 // import { AuthguardGuard } from 'authguard.guard';
 
@@ -57,12 +59,20 @@ const routes: Routes = [
         path: 'wishlist', component: WishlistComponent,
         // canActivate: [AuthguardGuard]
     },
-    // {
-    //     path: 'order', component: OrderComponent,
-    //     // canActivate: [AuthguardGuard]
-    // },
     {
-        path: '**', component: PagenotfoundComponent,
+        path: 'success', component: SuccessOrderComponent,
+        // canActivate: [AuthguardGuard]
+    },
+    {
+        path: 'order', component: OrderComponent,
+        // canActivate: [AuthguardGuard]
+    },
+    {
+        path: '404', component: PagenotfoundComponent,
+        // canActivate: [AuthguardGuard]
+    },
+    {
+        path: '**', redirectTo: '/404',
         // canActivate: [AuthguardGuard]
     }
 ];

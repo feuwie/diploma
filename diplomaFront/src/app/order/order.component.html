@@ -1,0 +1,85 @@
+<body>
+    <div class="row all">
+        <div class="col-sm-12">
+            <p class="bold_text">Оформление заказа</p>
+        </div>
+        <div class="col-sm-12">
+            <p class="bold_text" style="margin-top: 20px">Данные получателя</p>
+        </div>
+        <div class="col-xl-7 col-sm-12 cardz">
+            <p>Имя и фалимия</p>
+            <input type="text" value="{{ receivedUser?.name }}">
+            <p>Почта</p>
+            <input type="text" value="{{ receivedUser?.email }}">
+            <p>Телефон</p>
+            <input type="text">
+            <input type="checkbox"><span>Получать буду не я</span>
+        </div>
+        <div class="col-xl-4 col-sm-12 cards">
+            <div class="col-sm-12">
+                <p class="bold_text">Ваш заказ</p>
+            </div>
+            <hr>
+            <div class="rows">
+                <div class="col-sm-6">
+                    <p>Товары ()</p>
+                </div>
+                <div class="col-sm-6" style="text-align: right;">
+                </div>
+            </div>
+            <div class="rows">
+                <div class="col-sm-6">
+                    <p>Скидка</p>
+                </div>
+                <div class="col-sm-6" style="text-align: right;">
+                </div>
+            </div>
+            <hr>
+            <div class="rows">
+                <div class="col-sm-6">
+                    <p class="bold_text">Итого:</p>
+                </div>
+                <div class="col-sm-6" style="text-align: right;">
+                    <!-- <p>{{ lover[0] | format }}</p> -->
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <p class="bold_text" style="margin-top: 20px">Адрес доставки</p>
+        </div>
+        <div class="col-sm-12 cards">
+            <p>Город, улицы, номер дома</p>
+            <input type="text">
+            <p>Кв./офис</p>
+            <input type="text">
+            <p>Этаж</p>
+            <input type="text">
+            <p>Подъезд</p>
+            <input type="text">
+            <p>Домофон</p>
+            <input type="text">
+            <p>Комментарии курьеру</p>
+            <input type="text">
+            <input type="checkbox"><span>Сохранить адрес</span>
+        </div>
+        <div class="col-sm-12">
+            <p class="bold_text" style="margin-top: 20px">Способ оплаты</p>
+        </div>
+        <div class="col-sm-12 cards">
+            <form #checkout="ngForm" (ngSubmit)="onSubmit(checkout)" class="checkout">
+                <div class="form-row">
+                    <label for="card-info">Card Info</label>
+                    <div id="card-info" #cardInfo></div>
+
+                    <div id="card-errors" role="alert" *ngIf="error">{{ error }}</div>
+                </div>
+
+                <button type="submit">Pay $777</button>
+            </form>
+            <input type="checkbox"><span>Сохранить карту</span>
+        </div>
+        <div class="col-sm-12" style="text-align: center;">
+            <button class="btn_make" style="margin: 24px;">Оформить заказ</button>
+        </div>
+    </div>
+</body>

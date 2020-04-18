@@ -1,0 +1,13 @@
+<body>
+    <div class="row all">
+        <div class="col-sm-12" style="text-align: center;">
+            <form [formGroup]="loginForm" (ngSubmit)="login()">
+                <div *ngIf="error">Content to render when condition is true.</div>
+                <input class="form-control" formControlName="email" placeholder="Email" style="width:50%">
+                <input type="password" class="form-control" formControlName="password" placeholder="Password"
+                    style="width:50%">
+                <input type="submit" class="btn btn-primary" style="width:50%" value="Login">
+            </form>
+        </div>
+    </div>
+</body>

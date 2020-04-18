@@ -1,0 +1,91 @@
+<header>
+    <div class="row header">
+        <div class="col-xl-2 col-sm-12" style="text-align: center;">
+            <a routerLink="">
+                <img class="mainlogo"
+                    src="https://www.highload.ru/uploads/f/c8/bc70a30d9390972930c4cbcfbb7f2-fit-400x170-0.png"
+                    alt="logo">
+            </a>
+        </div>
+        <div class="col-xl-2 col-sm-12">
+            <div class="shop">
+                <a routerLink="category">
+                    <i class="fas fa-shopping-cart fa-lg catalog_ic"></i>
+                    <span style="color: white;">Каталог</span>
+                </a>
+            </div>
+        </div>
+        <div class="col-xl-5 col-sm-12 search">
+            <input type="text" autocomplete="off" placeholder="Ищите..." tabindex="1" class="searchTerm"
+                [(ngModel)]="product.productTitle">
+            <button type="submit" class="searchButton" (click)="search()">
+                <i class="fa fa-search fa-lg"></i>
+            </button>
+        </div>
+        <div [ngSwitch]="loggedType" style="display: inline-block">
+            <div style="display: inline-block">
+                <div *ngSwitchCase="''">
+                    <div class="col-xl-1 col-sm-4 nav">
+                        <a routerLink="/login"><i class="fas fa-user"></i>
+                            <p>Логин</p>
+                        </a>
+                    </div>
+                    <div class="col-xl-1 col-sm-4 nav">
+                        <a routerLink="/registration"><i class="fas fa-user"></i>
+                            <p>Регистрация</p>
+                        </a>
+                    </div>
+                    <div class="col-xl-1 col-sm-4 nav">
+                        <a routerLink="wishlist"><i class="fas fa-heart"></i>
+                            <p>Избранное</p>
+                        </a>
+                    </div>
+                    <div class="col-xl-1 col-sm-4 nav">
+                        <a routerLink="cart"><i class="fas fa-shopping-basket"></i>
+                            <p>Корзина</p>
+                        </a>
+                    </div>
+                </div>
+                <div *ngSwitchCase="'customer'">
+                    <div class="col-xl-1 col-sm-4 nav">
+                        <a routerLink="profile"><i class="fas fa-user"></i>
+                            <p>Профиль</p>
+                        </a>
+                    </div>
+                    <div class="col-xl-1 col-sm-4 nav">
+                        <a routerLink="wishlist"><i class="fas fa-heart"></i>
+                            <p>Избранное</p>
+                        </a>
+                    </div>
+                    <div class="col-xl-1 col-sm-4 nav">
+                        <a routerLink="cart"><i class="fas fa-shopping-basket"></i>
+                            <p>Корзина</p>
+                        </a>
+                    </div>
+                    <div class="col-xl-1 col-sm-4 nav">
+                        <a (click)="logout()" style="cursor: pointer; float: right;"><i class="fas fa-heart"></i>
+                            <p>Выход</p>
+                        </a>
+                    </div>
+                </div>
+                <div *ngSwitchCase="'admin'">
+                    <div class="col-xl-1 col-sm-4 nav">
+                        <a routerLink="#"><i class="fas fa-user"></i>
+                            <p>Заказы</p>
+                        </a>
+                    </div>
+                    <div class="col-xl-1 col-sm-4 nav">
+                        <a routerLink="#"><i class="fas fa-shopping-basket"></i>
+                            <p>Админ панель</p>
+                        </a>
+                    </div>
+                    <div class="col-xl-1 col-sm-4 nav">
+                        <a (click)="logout()" style="cursor: pointer; float: right;"><i class="fas fa-heart"></i>
+                            <p>Выход</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

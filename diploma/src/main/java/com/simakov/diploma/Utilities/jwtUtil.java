@@ -41,8 +41,10 @@ public class jwtUtil {
 
 	public User checkToken(String token) {
 		Claims claim = Jwts.parser().setSigningKey(Key).parseClaimsJws(token).getBody();
-		User user = userRepo.findByEmailAndPasswordAndUsertype(claim.get(SES_EMAIL).toString(),
-				claim.get(SES_PASS).toString(), claim.get(SES_TYPE).toString());
+		// User user =
+		// userRepo.findByEmailAndPasswordAndUsertype(claim.get(SES_EMAIL).toString(),
+		// claim.get(SES_PASS).toString(), claim.get(SES_TYPE).toString());
+		User user = userRepo.findByEmailAndUsertype(claim.get(SES_EMAIL).toString(), claim.get(SES_TYPE).toString());
 		return user;
 	}
 

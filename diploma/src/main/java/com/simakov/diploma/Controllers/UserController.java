@@ -13,6 +13,8 @@ import com.simakov.diploma.Utilities.jwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,6 +45,10 @@ public class UserController {
             } else {
                 resp.setStatus("200");
                 resp.setMessage("REGISTERED");
+                String pass = user.getPassword();
+                PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                String hashedPassword = passwordEncoder.encode(pass);
+                user.setPassword(hashedPassword);
                 User reg = userRepo.save(user);
                 resp.setObject(reg);
             }
@@ -63,17 +69,32 @@ public class UserController {
         if (credential.containsKey("password")) {
             password = credential.get("password");
         }
-        User loggedUser = userRepo.findByEmailAndPasswordAndUsertype(email, password, "customer");
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        User loggedUser = userRepo.findByEmailAndUsertype(email, "customer");
         serverResp resp = new serverResp();
         if (loggedUser != null) {
-            String jwtToken = jwtutil.createToken(email, password, "customer");
-            resp.setStatus("200");
-            resp.setMessage("SUCCESS");
-            resp.setAUTH_TOKEN(jwtToken);
+            if (passwordEncoder.matches(password, loggedUser.getPassword())) {
+                String jwtToken = jwtutil.createToken(email, password, "customer");
+                resp.setStatus("200");
+                resp.setMessage("SUCCESS");
+                resp.setAUTH_TOKEN(jwtToken);
+            } else {
+                resp.setStatus("500");
+                resp.setMessage("ERROR");
+            }
         } else {
             resp.setStatus("500");
             resp.setMessage("ERROR");
         }
+        // if (loggedUser != null) {
+        // String jwtToken = jwtutil.createToken(email, password, "customer");
+        // resp.setStatus("200");
+        // resp.setMessage("SUCCESS");
+        // resp.setAUTH_TOKEN(jwtToken);
+        // } else {
+        // resp.setStatus("500");
+        // resp.setMessage("ERROR");
+        // }
         return new ResponseEntity<serverResp>(resp, HttpStatus.OK);
     }
 }

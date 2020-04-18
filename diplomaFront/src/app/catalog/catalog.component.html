@@ -1,0 +1,109 @@
+<body>
+    <div class="row all" *ngIf="receivedCategory">
+        <div class="col-sm-12">
+            <p>
+                <a routerLink="">goods</a> - <a routerLink="/category">Каталог</a> -
+                {{ receivedCategory.category_title }}
+            </p>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <p class="bold_text">{{ receivedCategory.category_title }}</p>
+        </div>
+        <div class="col-sm-12 col-md-6" style="text-align: right; margin-bottom: 10px;">
+            <select (change)="sortBy($event.target.value)">
+                <option>Сначала новые</option>
+                <option>Сначала старые</option>
+                <option>Сначала дешевые</option>
+                <option>Сначала дорогие</option>
+            </select>
+        </div>
+        <!-- <div class="col-lg-3 col-sm-12 filter" style="margin-bottom: 10px;">
+      <p class="bold_text" style="text-align: left;">Цена</p>
+      <hr>
+      <p>от <input type="text" size="9"> до <input type="text" size="9"></p>
+      <p class="bold_text" style="text-align: left; margin-top: 10px;">Бренды</p>
+      <input type="checkbox" class="checkbox" id="apple" />
+      <label for="apple">Apple</label><br>
+      <input type="checkbox" class="checkbox" id="samsung" />
+      <label for="samsung">Samsung</label><br>
+      <input type="checkbox" class="checkbox" id="xiaomi" />
+      <label for="xiaomi">Xiaomi</label><br>
+      <input type="checkbox" class="checkbox" id="lg" />
+      <label for="lg">LG</label><br>
+      <input type="checkbox" class="checkbox" id="nokia" />
+      <label for="nokia">Nokia</label><br>
+      <a href="#">Посмотреть все</a>
+      <p class="bold_text" style="text-align: left; margin-top: 10px;">Высокий рейтинг</p>
+      <p class="bold_text" style="text-align: left; margin-top: 10px;">Цвет</p>
+      <input type="checkbox" class="checkbox" id="red" />
+      <label for="red">Красный</label><br>
+      <input type="checkbox" class="checkbox" id="blue" />
+      <label for="blue">Синий</label><br>
+      <input type="checkbox" class="checkbox" id="green" />
+      <label for="green">Зеленый</label><br>
+      <input type="checkbox" class="checkbox" id="brown" />
+      <label for="brown">Коричневый</label><br>
+      <input type="checkbox" class="checkbox" id="pink" />
+      <label for="pink">Розовый</label><br>
+      <a href="#">Посмотреть все</a>
+      <p class="bold_text" style="text-align: left; margin-top: 10px;">Страна</p>
+      <input type="checkbox" class="checkbox" id="russia" />
+      <label for="russia">Россия</label><br>
+      <input type="checkbox" class="checkbox" id="usa" />
+      <label for="usa">США</label><br>
+      <input type="checkbox" class="checkbox" id="japan" />
+      <label for="japan">Япония</label><br>
+      <input type="checkbox" class="checkbox" id="china" />
+      <label for="china">Китай</label><br>
+      <input type="checkbox" class="checkbox" id="madagascar" />
+      <label for="madagascar">Мадагаскар</label><br>
+      <a href="#">Посмотреть все</a>
+    </div> -->
+
+        <div class="col-lg-8 col-sm-12">
+            <div class="row">
+                <!-- <div
+          *ngFor="let product of receivedProducts | filter : 'age' : 'id' : groupValue | paginate: config; index as i"
+          class="col-lg-3 col-md-4 col-sm-12 card"> -->
+                <div *ngFor="let product of receivedProducts | paginate: config; let i = index"
+                    class="col-lg-3 col-md-4 col-sm-12 card">
+                    <a routerLink="/product/{{ product.productArticle }}">{{ product.productTitle }}</a>
+                    <img src="{{ product.productImg }}" alt="img" height="160">
+                    <p style="font-weight: 900">{{ product.productPrice | format }} ₽</p>
+                    <i *ngIf="testArray.includes(product.productArticle)" class="fas fa-heart"
+                        (click)="delFromWishlist(product)"></i>
+                    <i *ngIf="!testArray.includes(product.productArticle)" class="far fa-heart"
+                        (click)="addToWishlist(product)"></i>
+                    <button class="btn_add"
+                        *ngIf="!testArrayTwo.includes(product.productArticle) && product.productQuantity > 0"
+                        (click)="addToCart(product)">В корзину</button>
+                    <p class="btn_add" *ngIf="product.productQuantity == 0">Нет в
+                        наличии</p>
+                    <div class="col-md-2 col-sm-12" *ngIf="testArrayTwo.includes(product.productArticle)">
+                        <button (click)="minus(product)">-</button>
+                        <input type="text" style="width: 30px;" value="{{quan(product)}}" id="{{ i }}"
+                            (change)="change($event, product, i)">
+                        <button (click)="plus(product)">+</button>
+                    </div>
+                </div>
+                <pagination-controls (pageChange)="pageChange($event)" directionLinks="false" maxSize="10">
+                </pagination-controls>
+            </div>
+        </div>
+
+        <!-- <ng-container *ngFor="let group of groups;  let i=index">
+      <label class="btn btn-filter" id="bttns">
+        <input type="checkbox" name="customersGroupFilter" autoComplete="off" [value]="group"
+          (change)="changeGroup($event)">
+        {{ group }}
+      </label>&nbsp;
+    </ng-container>
+    <ng-container *ngFor="let group of groupOne;  let i=index">
+      <label class="btn btn-filter" id="bttns">
+        <input type="checkbox" name="customersGroupFilter" autoComplete="off" [value]="group"
+          (change)="changeGroup($event)">
+        {{ group }}
+      </label>&nbsp;
+    </ng-container> -->
+    </div>
+</body>

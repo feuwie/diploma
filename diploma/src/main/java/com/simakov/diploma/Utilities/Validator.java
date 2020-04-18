@@ -51,9 +51,6 @@ public class Validator {
 	}
 
 	public static boolean isUserEmpty(User user) {
-		if (user.getAge() == 0) {
-			return true;
-		}
 		if (user.getPassword() == null || user.getPassword() == "") {
 			return true;
 		}

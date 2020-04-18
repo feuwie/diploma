@@ -139,6 +139,7 @@ public class WishlistController {
                 wish.setProductTitle(wishItem.getProductTitle());
                 wish.setProductArticle(wishItem.getProductArticle());
                 wish.setProductImg(wishItem.getProductImg());
+                wish.setProductQuantity(wishItem.getProductQuantity());
                 wishlistRepo.save(wish);
                 resp.setStatus("200");
                 resp.setMessage("Wishlist updated");

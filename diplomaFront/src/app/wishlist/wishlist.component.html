@@ -1,0 +1,46 @@
+<body>
+    <div *ngIf="receivedWishlist?.length === 0" class="row all" style="text-align: center; padding: 200px;">
+        <div class="col-sm-12">
+            <p>Ваш список избранных товаров пока пуст. <br>Найдите товары в нашем каталоге или воспользуйтесь поиском.
+            </p>
+        </div>
+        <div class="col-sm-12">
+            <button class="btn_catalog" routerLink="/category">Перейти</button>
+        </div>
+    </div>
+    <div *ngIf="receivedWishlist?.length > 0" class="row all">
+        <div class="col-xl-12 col-sm-12">
+            <p class="bold_text">Избранное</p>
+        </div>
+        <div class="col-xl-12 col-sm-12">
+            <select (change)="sortBy($event.target.value)">
+                <option>Сначала новые</option>
+                <option>Сначала старые</option>
+                <option>Сначала дешевые</option>
+                <option>Сначала дорогие</option>
+            </select>
+            <hr>
+        </div>
+        <div class="row">
+            <div *ngFor="let product of receivedWishlist; index as i" class="col-xl-2 col-lg-3 col-md-4 col-sm-12 card">
+                <button style="text-align: right;" (click)="delFromWishlist(i)">x</button>
+                <img src="{{ product.productImg }}" alt="img" width="80">
+                <a routerLink="/product/{{ product.productArticle }}">
+                    {{ product.productTitle }}
+                    {{ product.productPrice | format}} ₽
+                </a>
+                <button class="btn_add"
+                    *ngIf="!testArrayTwo.includes(product.productArticle) && product.productQuantity > 0"
+                    (click)="addToCart(product)">В корзину</button>
+                <p class="btn_add" *ngIf="product.productQuantity == 0">Нет в
+                    наличии</p>
+                <div class="col-md-2 col-sm-12" *ngIf="testArrayTwo.includes(product.productArticle)">
+                    <button (click)="minus(product)">-</button>
+                    <input type="text" style="width: 30px;" value="{{quan(product)}}" id="{{ i }}"
+                        (change)="change($event, product, i)">
+                    <button (click)="plus(product)">+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

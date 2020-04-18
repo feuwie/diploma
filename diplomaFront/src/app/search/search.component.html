@@ -1,0 +1,11 @@
+<p>Результаты по запросу "{{ route.snapshot.queryParams.text }}"</p>
+
+<div *ngIf="route.snapshot.queryParams.text != '' && receivedProducts">
+    <p *ngFor="let product of receivedProducts">
+        {{ product.productTitle }}
+    </p>
+</div>
+
+<p *ngIf="receivedProducts == false || route.snapshot.queryParams.text == ''">
+    Увы, ничего не найдено
+</p>

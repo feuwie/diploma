@@ -1,13 +1,16 @@
 package com.simakov.diploma.Controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
 
 import com.simakov.diploma.Model.Cart;
+import com.simakov.diploma.Model.Payment;
 import com.simakov.diploma.Model.Product;
 import com.simakov.diploma.Model.User;
 import com.simakov.diploma.Repository.CartRepository;
@@ -16,14 +19,21 @@ import com.simakov.diploma.Repository.ProductRepository;
 import com.simakov.diploma.Repository.UserRepository;
 import com.simakov.diploma.Response.cartResp;
 import com.simakov.diploma.Response.categoryResp;
+import com.simakov.diploma.Response.paymentResp;
 import com.simakov.diploma.Response.productResp;
 import com.simakov.diploma.Response.serverResp;
 import com.simakov.diploma.Utilities.Validator;
 import com.simakov.diploma.Utilities.jwtUtil;
+import com.stripe.Stripe;
+import com.stripe.model.Charge;
+import com.stripe.model.PaymentIntent;
+import com.stripe.model.Token;
+import com.stripe.net.RequestOptions;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -157,5 +167,25 @@ public class CartController {
             resp.setMessage("ERROR");
         }
         return new ResponseEntity<cartResp>(resp, HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/payment")
+    public ResponseEntity<paymentResp> paymentInfo(@RequestBody Payment chargeForm) {
+        Token lover = chargeForm.getToken();
+        paymentResp resp = new paymentResp();
+        try {
+            Stripe.apiKey = "sk_test_GKfX0jhismUAg2kdSNzIQaKX00IVS2UVEC";
+            Map<String, Object> params = new HashMap<>();
+            params.put("amount", chargeForm.getUserAmount());
+            params.put("currency", "RUB");
+            params.put("source", lover.getId());
+            Charge.create(params);
+            resp.setStatus("200");
+            resp.setMessage("Order successed");
+        } catch (Exception e) {
+            resp.setStatus("500");
+            resp.setMessage(e.getMessage());
+        }
+        return new ResponseEntity<paymentResp>(resp, HttpStatus.ACCEPTED);
     }
 }
