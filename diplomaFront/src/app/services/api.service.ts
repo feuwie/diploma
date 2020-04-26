@@ -16,6 +16,20 @@ export class ApiService {
 
     constructor(@Inject(SESSION_STORAGE) private storage: StorageService, private http: HttpClient) { }
 
+    phoneReg(user: User): Observable<any> {
+        return this.http.post('http://localhost:8080/verifyphone', user);
+    }
+    phoneCheck(str: String, code: String, phone: any): Observable<any> {
+        const body = { str: str, code: code, phone: phone };
+        return this.http.post('http://localhost:8080/checkphone', body);
+    }
+
+    // auth
+
+    // check(user: User): Observable<any> {
+    //     return this.http.post('http://localhost:8080/user/check', user);
+    // }
+
     register(user: User): Observable<any> {
         return this.http.post('http://localhost:8080/user/registration', user);
     }
@@ -26,6 +40,15 @@ export class ApiService {
 
     adminLogin(user: User): Observable<any> {
         return this.http.post('http://localhost:8080/admin/login', user);
+    }
+
+    userMailLogin(user: User): Observable<any> {
+        console.log(user);
+        return this.http.post('http://localhost:8080/user/loginmail', user);
+    }
+
+    adminMailLogin(user: User): Observable<any> {
+        return this.http.post('http://localhost:8080/admin/loginmail', user);
     }
 
     // category
@@ -69,6 +92,26 @@ export class ApiService {
         return this.http.post<any>('http://localhost:8080/profile', null, { headers: myheader }); // change
     }
 
+    getOrders(auth: string): Observable<any> {
+        const myheader = new HttpHeaders().set('AUTH_TOKEN', auth);
+        return this.http.get<any>('http://localhost:8080/getorders', { headers: myheader });
+    }
+
+    updProfilePersonal(auth: string, change: any): Observable<any> {
+        const myheader = new HttpHeaders().set('AUTH_TOKEN', auth);
+        return this.http.post<any>('http://localhost:8080/updprofilepinfo', change, { headers: myheader });
+    }
+
+    updPhone(auth: string, change: any): Observable<any> {
+        const myheader = new HttpHeaders().set('AUTH_TOKEN', auth);
+        return this.http.post<any>('http://localhost:8080/updphone', change, { headers: myheader });
+    }
+
+    delProfile(auth: string): Observable<any> {
+        const myheader = new HttpHeaders().set('AUTH_TOKEN', auth);
+        return this.http.get<any>('http://localhost:8080/delprofile', { headers: myheader });
+    }
+
 
     // cart
 
@@ -79,7 +122,7 @@ export class ApiService {
 
     addToCart(auth: string, product: any): Observable<any> {
         const myheader = new HttpHeaders().set('AUTH_TOKEN', auth);
-        return this.http.get<any>('http://localhost:8080/addcart?productId=' + product.productId, { headers: myheader });
+        return this.http.post<any>('http://localhost:8080/addcart', product.productId, { headers: myheader });
     }
 
     updateCart(auth: string, cartid: number, qty: number): Observable<any> {
@@ -89,7 +132,7 @@ export class ApiService {
 
     deleteCart(auth: string, cartid: number): Observable<any> {
         const myheader = new HttpHeaders().set('AUTH_TOKEN', auth);
-        return this.http.get<any>('http://localhost:8080/delcart' + '?cartid=' + cartid, { headers: myheader });
+        return this.http.post<any>('http://localhost:8080/delcart', cartid, { headers: myheader });
     }
 
     // wishlist
@@ -101,12 +144,12 @@ export class ApiService {
 
     addToWishlist(auth: string, product: any): Observable<any> {
         const myheader = new HttpHeaders().set('AUTH_TOKEN', auth);
-        return this.http.get<any>('http://localhost:8080/addwishlist?productId=' + product.productId, { headers: myheader });
+        return this.http.post<any>('http://localhost:8080/addwishlist', product.productId, { headers: myheader });
     }
 
     delFromWishlist(auth: string, wishlistId: number): Observable<any> {
         const myheader = new HttpHeaders().set('AUTH_TOKEN', auth);
-        return this.http.get<any>('http://localhost:8080/delwishlist?wishlistid=' + wishlistId, { headers: myheader });
+        return this.http.post<any>('http://localhost:8080/delwishlist', wishlistId, { headers: myheader });
     }
 
 
@@ -163,4 +206,13 @@ export class ApiService {
         const myheader = new HttpHeaders().set('AUTH_TOKEN', auth);
         return this.http.get<any>('http://localhost:8080/makeorder', { headers: myheader });
     }
+
+
+
+    // test
+    loginAnon(): Observable<any> {
+        return this.http.get('http://localhost:8080/user/loginanon');
+    }
+
+    // test
 }

@@ -3,7 +3,6 @@ package com.simakov.diploma.Repository;
 import java.util.List;
 
 import com.simakov.diploma.Model.AdminOrder;
-import com.simakov.diploma.Model.Cart;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,4 +24,6 @@ public interface AdminOrderRepository extends JpaRepository<AdminOrder, Long> {
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query(value = "ALTER TABLE admin_order ADD adminorder_id int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;", nativeQuery = true)
     void addId();
+
+    List<AdminOrder> findByUserEmail(String email);
 }

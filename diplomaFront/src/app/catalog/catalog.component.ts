@@ -1,6 +1,7 @@
 import { ApiService } from 'src/app/services/api.service';
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Product } from '../model/product';
 
 @Component({
     selector: 'app-catalog',
@@ -41,6 +42,12 @@ export class CatalogComponent implements OnInit {
         this.getCart();
     }
 
+    performFilter(filterBy: string): Product[] {
+        filterBy = filterBy.toLocaleLowerCase();
+        return this.receivedProducts.filter((product: Product) =>
+            product.productTitle.toLocaleLowerCase().indexOf(filterBy) !== -1);
+    }
+
     getWish() {
         if (this.api.isAuthenticated) {
             this.auth = this.api.getToken();
@@ -62,6 +69,38 @@ export class CatalogComponent implements OnInit {
                     this.testArrayTwo[i] = this.receivedCart[i].productArticle;
                 }
             }, error => console.log(error));
+        }
+        // if (sessionStorage.getItem('auth_type') == '"guest"') {
+        //     this.auth = this.api.getToken();
+        //     this.api.getCart(sessionStorage.getItem('uuid')).subscribe(res => {
+        //         this.receivedCart = res.oblist;
+        //         for (let i = 0; i < this.receivedCart.length; i++) {
+        //             this.testArrayTwo[i] = this.receivedCart[i].productArticle;
+        //         }
+        //     }, error => console.log(error));
+        // }
+    }
+
+    sortBy(val: string): void {
+        if (val === 'Сначала (а-я)') {
+            this.receivedProducts.sort((a: Product, b: Product) => {
+                return a.productTitle[0].localeCompare(b.productTitle[0]);
+            });
+        }
+        if (val === 'Сначала (я-а)') {
+            this.receivedProducts.sort((a: Product, b: Product) => {
+                return b.productTitle[0].localeCompare(a.productTitle[0]);
+            });
+        }
+        if (val === 'Сначала дешевые') {
+            this.receivedProducts.sort((a: Product, b: Product) => {
+                return a.productPrice - b.productPrice;
+            });
+        }
+        if (val === 'Сначала дорогие') {
+            this.receivedProducts.sort((a: Product, b: Product) => {
+                return b.productPrice - a.productPrice;
+            });
         }
     }
 

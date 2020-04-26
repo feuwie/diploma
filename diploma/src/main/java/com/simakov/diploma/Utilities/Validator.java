@@ -42,24 +42,19 @@ public class Validator {
 		return false;
 	}
 
-	public static String removeSpaces(String input) {
-		String filterInput = "";
-		if (input != null && input != "") {
-			filterInput = input.replace(" ", "");
-		}
-		return filterInput;
-	}
-
 	public static boolean isUserEmpty(User user) {
-		if (user.getPassword() == null || user.getPassword() == "") {
+		// if (user.getPassword() == null || user.getPassword() == "") {
+		// 	return true;
+		// }
+		// if (user.getEmail() == null || user.getEmail() == "") {
+		// 	return true;
+		// }
+		if (user.getPhone() == null || user.getPhone() == "") {
 			return true;
 		}
-		if (user.getEmail() == null || user.getEmail() == "") {
-			return true;
-		}
-		if (user.getUsername() == null || user.getUsername() == "") {
-			return true;
-		}
+		// if (user.getUsername() == null || user.getUsername() == "") {
+		// return true;
+		// }
 		return false;
 	}
 

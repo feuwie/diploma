@@ -32,7 +32,7 @@ export class OrderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.lover = Number(localStorage.getItem('cartTotal')) * 100;
         // this.lover = sessionStorage.getItem('test');
         this.auth = this.api.getToken();
-        this.api.getProfile(this.auth).subscribe(res => { this.receivedUser = res.map; }, err => {
+        this.api.getProfile(this.auth).subscribe(res => { this.receivedUser = res.object; console.log(res); }, err => {
             console.log(err);
         });
     }
@@ -41,7 +41,6 @@ export class OrderComponent implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit() {
         this.card = elements.create('card');
         this.card.mount(this.cardInfo.nativeElement);
-
         this.card.addEventListener('change', this.cardHandler);
     }
 

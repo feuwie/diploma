@@ -1,6 +1,4 @@
 import { WishlistComponent } from './wishlist/wishlist.component';
-import { RegistrationComponent } from './auth/registration/registration.component';
-import { LoginComponent } from './auth/login/login.component';
 import { CategoryComponent } from './category/category.component';
 // import { SearchComponent } from './search/search.component';
 // import { ProfileComponent } from './profile/profile.component';
@@ -18,6 +16,7 @@ import { ProductComponent } from './product/product.component';
 import { CartComponent } from './cart/cart.component';
 import { OrderComponent } from './order/order.component';
 import { SuccessOrderComponent } from './success-order/success-order.component';
+import { AuthComponent } from './auth/auth.component';
 // import { CartComponent } from './cart/cart.component';
 // import { AuthguardGuard } from 'authguard.guard';
 
@@ -26,10 +25,8 @@ const routes: Routes = [
         path: '', component: MainComponent, pathMatch: 'full',
     },
     {
-        path: 'login', component: LoginComponent,
-    },
-    {
-        path: 'registration', component: RegistrationComponent
+        path: 'auth', component: AuthComponent,
+        // canActivate: [AuthguardGuard]
     },
     {
         path: 'category', component: CategoryComponent,

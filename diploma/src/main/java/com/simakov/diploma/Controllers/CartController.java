@@ -1,45 +1,33 @@
 package com.simakov.diploma.Controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.validation.Valid;
 
 import com.simakov.diploma.Model.Cart;
 import com.simakov.diploma.Model.Payment;
 import com.simakov.diploma.Model.Product;
 import com.simakov.diploma.Model.User;
 import com.simakov.diploma.Repository.CartRepository;
-import com.simakov.diploma.Repository.CategoryRepository;
 import com.simakov.diploma.Repository.ProductRepository;
-import com.simakov.diploma.Repository.UserRepository;
-import com.simakov.diploma.Response.cartResp;
-import com.simakov.diploma.Response.categoryResp;
-import com.simakov.diploma.Response.paymentResp;
-import com.simakov.diploma.Response.productResp;
-import com.simakov.diploma.Response.serverResp;
+import com.simakov.diploma.Response.Response;
 import com.simakov.diploma.Utilities.Validator;
 import com.simakov.diploma.Utilities.jwtUtil;
 import com.stripe.Stripe;
 import com.stripe.model.Charge;
-import com.stripe.model.PaymentIntent;
 import com.stripe.model.Token;
-import com.stripe.net.RequestOptions;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -57,8 +45,8 @@ public class CartController {
     private jwtUtil jwtutil;
 
     @GetMapping("/cart")
-    public ResponseEntity<cartResp> getCart(@RequestHeader(name = "AUTH_TOKEN") String AUTH_TOKEN) throws IOException {
-        cartResp resp = new cartResp();
+    public ResponseEntity<Response> getCart(@RequestHeader(name = "AUTH_TOKEN") String AUTH_TOKEN) throws IOException {
+        Response resp = new Response();
         if (!Validator.isStringEmpty(AUTH_TOKEN) && jwtutil.checkToken(AUTH_TOKEN) != null) {
             try {
                 User loggedUser = jwtutil.checkToken(AUTH_TOKEN);
@@ -75,17 +63,17 @@ public class CartController {
             resp.setStatus("500");
             resp.setMessage("ERROR");
         }
-        return new ResponseEntity<cartResp>(resp, HttpStatus.ACCEPTED);
+        return new ResponseEntity<Response>(resp, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/addcart")
-    public ResponseEntity<serverResp> addCart(@RequestHeader(name = "AUTH_TOKEN") String AUTH_TOKEN,
-            @RequestParam("productId") String productId) throws IOException {
-        serverResp resp = new serverResp();
+    @PostMapping("/addcart")
+    public ResponseEntity<Response> addCart(@RequestHeader(name = "AUTH_TOKEN") String AUTH_TOKEN,
+            @RequestBody int productId) throws IOException {
+        Response resp = new Response();
         if (!Validator.isStringEmpty(AUTH_TOKEN) && jwtutil.checkToken(AUTH_TOKEN) != null) {
             try {
                 User loggedUser = jwtutil.checkToken(AUTH_TOKEN);
-                Product cartItem = productRepo.findByProductId(Integer.parseInt(productId));
+                Product cartItem = productRepo.findByProductId(productId);
                 cartRepo.dropId();
                 cartRepo.autoIncrement();
                 cartRepo.addId();
@@ -93,7 +81,7 @@ public class CartController {
                 Date date = new Date();
                 cart.setCartAdded(date);
                 cart.setProductArticle(cartItem.getProductArticle());
-                cart.setProductId(Integer.parseInt(productId));
+                cart.setProductId(productId);
                 cart.setProductImg(cartItem.getProductImg());
                 cart.setProductPrice(cartItem.getProductPrice());
                 cart.setProductQuantity(1);
@@ -112,15 +100,14 @@ public class CartController {
             resp.setStatus("500");
             resp.setMessage("ERROR");
         }
-        return new ResponseEntity<serverResp>(resp, HttpStatus.ACCEPTED);
+        return new ResponseEntity<Response>(resp, HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/updcart")
-    public ResponseEntity<cartResp> updateCart(@RequestHeader(name = "AUTH_TOKEN") String AUTH_TOKEN,
+    public ResponseEntity<Response> updateCart(@RequestHeader(name = "AUTH_TOKEN") String AUTH_TOKEN,
             @RequestParam(name = "cartid") String cartid, @RequestParam(name = "quantity") String quantity)
             throws IOException {
-
-        cartResp resp = new cartResp();
+        Response resp = new Response();
         if (!Validator.isStringEmpty(AUTH_TOKEN) && jwtutil.checkToken(AUTH_TOKEN) != null) {
             try {
                 User loggedUser = jwtutil.checkToken(AUTH_TOKEN);
@@ -141,17 +128,17 @@ public class CartController {
             resp.setStatus("500");
             resp.setMessage("ERROR");
         }
-        return new ResponseEntity<cartResp>(resp, HttpStatus.ACCEPTED);
+        return new ResponseEntity<Response>(resp, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/delcart")
-    public ResponseEntity<cartResp> deleteCart(@RequestHeader(name = "AUTH_TOKEN") String AUTH_TOKEN,
-            @RequestParam(name = "cartid") String cartid) throws IOException {
-        cartResp resp = new cartResp();
+    @PostMapping("/delcart")
+    public ResponseEntity<Response> deleteCart(@RequestHeader(name = "AUTH_TOKEN") String AUTH_TOKEN,
+            @RequestBody int cartid) throws IOException {
+        Response resp = new Response();
         if (!Validator.isStringEmpty(AUTH_TOKEN) && jwtutil.checkToken(AUTH_TOKEN) != null) {
             try {
                 User loggedUser = jwtutil.checkToken(AUTH_TOKEN);
-                cartRepo.deleteByCartIdAndUserEmail(Integer.parseInt(cartid), loggedUser.getEmail());
+                cartRepo.deleteByCartIdAndUserEmail(cartid, loggedUser.getEmail());
                 List<Cart> cartlist = cartRepo.findByUserEmail(loggedUser.getEmail());
                 resp.setStatus("200");
                 resp.setMessage("Cart deleted");
@@ -166,13 +153,13 @@ public class CartController {
             resp.setStatus("500");
             resp.setMessage("ERROR");
         }
-        return new ResponseEntity<cartResp>(resp, HttpStatus.ACCEPTED);
+        return new ResponseEntity<Response>(resp, HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/payment")
-    public ResponseEntity<paymentResp> paymentInfo(@RequestBody Payment chargeForm) {
+    public ResponseEntity<Response> paymentInfo(@RequestBody Payment chargeForm) {
         Token lover = chargeForm.getToken();
-        paymentResp resp = new paymentResp();
+        Response resp = new Response();
         try {
             Stripe.apiKey = "sk_test_GKfX0jhismUAg2kdSNzIQaKX00IVS2UVEC";
             Map<String, Object> params = new HashMap<>();
@@ -186,6 +173,6 @@ public class CartController {
             resp.setStatus("500");
             resp.setMessage(e.getMessage());
         }
-        return new ResponseEntity<paymentResp>(resp, HttpStatus.ACCEPTED);
+        return new ResponseEntity<Response>(resp, HttpStatus.ACCEPTED);
     }
 }

@@ -8,8 +8,6 @@ import { CategoryComponent } from './category/category.component';
 import { MainComponent } from './main/main.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { ApiService } from './services/api.service';
-import { RegistrationComponent } from './auth/registration/registration.component';
-import { LoginComponent } from './auth/login/login.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { BrowserModule } from '@angular/platform-browser';
@@ -24,6 +22,8 @@ import { FormatPipe } from './pipe/format.pipe';
 import { StorageServiceModule } from 'angular-webstorage-service';
 import { WishlistComponent } from './wishlist/wishlist.component';
 import { SuccessOrderComponent } from './success-order/success-order.component';
+import { AuthComponent } from './auth/auth.component';
+import { NgOtpInputModule } from 'ng-otp-input';
 
 
 @NgModule({
@@ -31,8 +31,6 @@ import { SuccessOrderComponent } from './success-order/success-order.component';
         AppComponent,
         FooterComponent,
         HeaderComponent,
-        LoginComponent,
-        RegistrationComponent,
         PagenotfoundComponent,
         MainComponent,
         CategoryComponent,
@@ -44,7 +42,8 @@ import { SuccessOrderComponent } from './success-order/success-order.component';
         CartComponent,
         WishlistComponent,
         OrderComponent,
-        SuccessOrderComponent
+        SuccessOrderComponent,
+        AuthComponent
     ],
     imports: [
         BrowserModule,
@@ -55,6 +54,7 @@ import { SuccessOrderComponent } from './success-order/success-order.component';
         RouterModule,
         NgxPaginationModule,
         StorageServiceModule,
+        NgOtpInputModule
     ],
     providers: [ApiService],
     bootstrap: [AppComponent]

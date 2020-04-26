@@ -1,5 +1,6 @@
 import { ApiService } from 'src/app/services/api.service';
 import { Component, OnInit } from '@angular/core';
+import { Product } from '../model/product';
 
 @Component({
     selector: 'app-wishlist',
@@ -31,10 +32,27 @@ export class WishlistComponent implements OnInit {
         });
     }
 
-
-    lol() {
-        console.log(this.testArrayTwo);
-        console.log(this.receivedWishlist);
+    sortBy(val: string): void {
+        if (val === 'Сначала (а-я)') {
+            this.receivedWishlist.sort((a: Product, b: Product) => {
+                return a.productTitle[0].localeCompare(b.productTitle[0]);
+            });
+        }
+        if (val === 'Сначала (я-а)') {
+            this.receivedWishlist.sort((a: Product, b: Product) => {
+                return b.productTitle[0].localeCompare(a.productTitle[0]);
+            });
+        }
+        if (val === 'Сначала дешевые') {
+            this.receivedWishlist.sort((a: Product, b: Product) => {
+                return a.productPrice - b.productPrice;
+            });
+        }
+        if (val === 'Сначала дорогие') {
+            this.receivedWishlist.sort((a: Product, b: Product) => {
+                return b.productPrice - a.productPrice;
+            });
+        }
     }
 
 

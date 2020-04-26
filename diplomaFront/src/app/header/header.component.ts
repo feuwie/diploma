@@ -14,8 +14,8 @@ export class HeaderComponent implements OnInit {
 
     private loggedType: any;
     constructor(private auth: ApiService, private router: Router) {
-        if (this.auth.getAuthType() == null) {
-            this.loggedType = '';
+        if (this.auth.getAuthType() == 'guest') {
+            this.loggedType = 'guest';
         } else {
             if (this.auth.getAuthType() == 'customer') {
                 this.loggedType = 'customer';

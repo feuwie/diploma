@@ -2,24 +2,13 @@ package com.simakov.diploma.Controllers;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-
-import javax.persistence.Query;
-import javax.validation.Valid;
 
 import com.simakov.diploma.Model.Product;
 import com.simakov.diploma.Model.User;
 import com.simakov.diploma.Model.Wishlist;
-import com.simakov.diploma.Repository.CartRepository;
-import com.simakov.diploma.Repository.CategoryRepository;
 import com.simakov.diploma.Repository.ProductRepository;
-import com.simakov.diploma.Repository.UserRepository;
 import com.simakov.diploma.Repository.WishlistRepository;
-import com.simakov.diploma.Response.cartResp;
-import com.simakov.diploma.Response.categoryResp;
-import com.simakov.diploma.Response.productResp;
-import com.simakov.diploma.Response.serverResp;
-import com.simakov.diploma.Response.wishlistResp;
+import com.simakov.diploma.Response.Response;
 import com.simakov.diploma.Utilities.Validator;
 import com.simakov.diploma.Utilities.jwtUtil;
 
@@ -31,7 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -49,9 +37,9 @@ public class WishlistController {
     private jwtUtil jwtutil;
 
     @GetMapping("/wishlist")
-    public ResponseEntity<wishlistResp> getWishlist(@RequestHeader(name = "AUTH_TOKEN") String AUTH_TOKEN)
+    public ResponseEntity<Response> getWishlist(@RequestHeader(name = "AUTH_TOKEN") String AUTH_TOKEN)
             throws IOException {
-        wishlistResp resp = new wishlistResp();
+        Response resp = new Response();
         if (!Validator.isStringEmpty(AUTH_TOKEN) && jwtutil.checkToken(AUTH_TOKEN) != null) {
             try {
                 User loggedUser = jwtutil.checkToken(AUTH_TOKEN);
@@ -68,7 +56,7 @@ public class WishlistController {
             resp.setStatus("500");
             resp.setMessage("ERROR");
         }
-        return new ResponseEntity<wishlistResp>(resp, HttpStatus.ACCEPTED);
+        return new ResponseEntity<Response>(resp, HttpStatus.ACCEPTED);
     }
 
     // @PostMapping("/delwishlist")
@@ -96,14 +84,15 @@ public class WishlistController {
     // return new ResponseEntity<wishlistResp>(resp, HttpStatus.ACCEPTED);
     // }
 
-    @GetMapping("/delwishlist")
-    public ResponseEntity<wishlistResp> delWishlist(@RequestHeader(name = "AUTH_TOKEN") String AUTH_TOKEN,
-            @RequestParam(name = "wishlistid") String wishlistid) throws IOException {
-        wishlistResp resp = new wishlistResp();
+    @PostMapping("/delwishlist")
+    public ResponseEntity<Response> delWishlist(@RequestHeader(name = "AUTH_TOKEN") String AUTH_TOKEN,
+            @RequestBody int wishlistid) throws IOException {
+        System.out.println(wishlistid);
+        Response resp = new Response();
         if (!Validator.isStringEmpty(AUTH_TOKEN) && jwtutil.checkToken(AUTH_TOKEN) != null) {
             try {
                 User loggedUser = jwtutil.checkToken(AUTH_TOKEN);
-                wishlistRepo.deleteByWishlistIdAndUserEmail(Integer.parseInt(wishlistid), loggedUser.getEmail());
+                wishlistRepo.deleteByWishlistIdAndUserEmail(wishlistid, loggedUser.getEmail());
                 List<Wishlist> wishlist = wishlistRepo.findByUserEmail(loggedUser.getEmail());
                 resp.setStatus("200");
                 resp.setMessage("DEL_CART");
@@ -118,24 +107,24 @@ public class WishlistController {
             resp.setStatus("500");
             resp.setMessage("ERROR");
         }
-        return new ResponseEntity<wishlistResp>(resp, HttpStatus.ACCEPTED);
+        return new ResponseEntity<Response>(resp, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/addwishlist")
-    public ResponseEntity<serverResp> addWishlist(@RequestHeader(name = "AUTH_TOKEN") String AUTH_TOKEN,
-            @RequestParam("productId") String productId) throws IOException {
-        serverResp resp = new serverResp();
+    @PostMapping("/addwishlist")
+    public ResponseEntity<Response> addWishlist(@RequestHeader(name = "AUTH_TOKEN") String AUTH_TOKEN,
+            @RequestBody int productId) throws IOException {
+        Response resp = new Response();
         if (!Validator.isStringEmpty(AUTH_TOKEN) && jwtutil.checkToken(AUTH_TOKEN) != null) {
             try {
                 User loggedUser = jwtutil.checkToken(AUTH_TOKEN);
-                Product wishItem = productRepo.findByProductId(Integer.parseInt(productId));
+                Product wishItem = productRepo.findByProductId(productId);
                 wishlistRepo.dropId();
                 wishlistRepo.autoIncrement();
                 wishlistRepo.addId();
                 Wishlist wish = new Wishlist();
                 wish.setUserEmail(loggedUser.getEmail());
                 wish.setProductPrice(wishItem.getProductPrice());
-                wish.setProductId(Integer.parseInt(productId));
+                wish.setProductId(productId);
                 wish.setProductTitle(wishItem.getProductTitle());
                 wish.setProductArticle(wishItem.getProductArticle());
                 wish.setProductImg(wishItem.getProductImg());
@@ -153,6 +142,6 @@ public class WishlistController {
             resp.setStatus("500");
             resp.setMessage("ERROR");
         }
-        return new ResponseEntity<serverResp>(resp, HttpStatus.ACCEPTED);
+        return new ResponseEntity<Response>(resp, HttpStatus.ACCEPTED);
     }
 }

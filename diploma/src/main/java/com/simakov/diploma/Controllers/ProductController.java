@@ -1,20 +1,10 @@
 package com.simakov.diploma.Controllers;
 
 import java.io.IOException;
-import java.util.Map;
-
-import javax.validation.Valid;
 
 import com.simakov.diploma.Model.Product;
-import com.simakov.diploma.Model.User;
-import com.simakov.diploma.Repository.CategoryRepository;
 import com.simakov.diploma.Repository.ProductRepository;
-import com.simakov.diploma.Repository.UserRepository;
-import com.simakov.diploma.Response.categoryResp;
-import com.simakov.diploma.Response.productResp;
-import com.simakov.diploma.Response.serverResp;
-import com.simakov.diploma.Utilities.Validator;
-import com.simakov.diploma.Utilities.jwtUtil;
+import com.simakov.diploma.Response.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +13,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*")
@@ -35,8 +23,8 @@ public class ProductController {
     private ProductRepository productRepo;
 
     @PostMapping("/{parent}")
-    public ResponseEntity<productResp> getProductParent(@RequestBody Product product) {
-        productResp resp = new productResp();
+    public ResponseEntity<Response> getProductParent(@RequestBody Product product) {
+        Response resp = new Response();
         try {
             resp.setStatus("200");
             resp.setMessage("LIST_PROD");
@@ -45,12 +33,12 @@ public class ProductController {
             resp.setStatus("500");
             resp.setMessage(e.getMessage());
         }
-        return new ResponseEntity<productResp>(resp, HttpStatus.ACCEPTED);
+        return new ResponseEntity<Response>(resp, HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/{title}")
-    public ResponseEntity<productResp> getProductTitle(@RequestBody Product product) {
-        productResp resp = new productResp();
+    public ResponseEntity<Response> getProductTitle(@RequestBody Product product) {
+        Response resp = new Response();
         try {
             resp.setStatus("200");
             resp.setMessage("LIST_PROD");
@@ -59,12 +47,12 @@ public class ProductController {
             resp.setStatus("500");
             resp.setMessage(e.getMessage());
         }
-        return new ResponseEntity<productResp>(resp, HttpStatus.ACCEPTED);
+        return new ResponseEntity<Response>(resp, HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/{article}")
-    public ResponseEntity<productResp> getProductArticle(@RequestBody Product product) {
-        productResp resp = new productResp();
+    public ResponseEntity<Response> getProductArticle(@RequestBody Product product) {
+        Response resp = new Response();
         try {
             resp.setStatus("200");
             resp.setMessage("PROD");
@@ -73,13 +61,13 @@ public class ProductController {
             resp.setStatus("500");
             resp.setMessage(e.getMessage());
         }
-        return new ResponseEntity<productResp>(resp, HttpStatus.ACCEPTED);
+        return new ResponseEntity<Response>(resp, HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/getproducts")
-    public ResponseEntity<productResp> getProducts() throws IOException {
+    public ResponseEntity<Response> getProducts() throws IOException {
 
-        productResp resp = new productResp();
+        Response resp = new Response();
         try {
             resp.setStatus("200");
             resp.setMessage("LIST ITEMS");
@@ -88,6 +76,6 @@ public class ProductController {
             resp.setStatus("500");
             resp.setMessage(e.getMessage());
         }
-        return new ResponseEntity<productResp>(resp, HttpStatus.ACCEPTED);
+        return new ResponseEntity<Response>(resp, HttpStatus.ACCEPTED);
     }
 }

@@ -15,7 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 public interface WishlistRepository extends JpaRepository<Wishlist, Long> {
     List<Wishlist> findByUserEmail(String email);
 
-    void deleteByWishlistIdAndUserEmail(int wishlistid, String email);
+    void deleteByWishlistIdAndUserEmail(int wishlistid, String email)
+    ;
+    void deleteAllByUserEmail(String email);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query(value = "ALTER TABLE wishlist DROP wishlist_id", nativeQuery = true)

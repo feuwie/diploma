@@ -3,7 +3,7 @@
         <div class="col-xl-2 col-sm-12" style="text-align: center;">
             <a routerLink="">
                 <img class="mainlogo"
-                    src="https://www.highload.ru/uploads/f/c8/bc70a30d9390972930c4cbcfbb7f2-fit-400x170-0.png"
+                    src="#"
                     alt="logo">
             </a>
         </div>
@@ -24,15 +24,10 @@
         </div>
         <div [ngSwitch]="loggedType" style="display: inline-block">
             <div style="display: inline-block">
-                <div *ngSwitchCase="''">
+                <div *ngSwitchCase="'guest'">
                     <div class="col-xl-1 col-sm-4 nav">
-                        <a routerLink="/login"><i class="fas fa-user"></i>
-                            <p>Логин</p>
-                        </a>
-                    </div>
-                    <div class="col-xl-1 col-sm-4 nav">
-                        <a routerLink="/registration"><i class="fas fa-user"></i>
-                            <p>Регистрация</p>
+                        <a routerLink="auth"><i class="fas fa-user"></i>
+                            <p>Войти</p>
                         </a>
                     </div>
                     <div class="col-xl-1 col-sm-4 nav">

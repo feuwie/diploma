@@ -6,7 +6,7 @@ import javax.validation.Valid;
 
 import com.simakov.diploma.Model.User;
 import com.simakov.diploma.Repository.UserRepository;
-import com.simakov.diploma.Response.serverResp;
+import com.simakov.diploma.Response.Response;
 import com.simakov.diploma.Utilities.jwtUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,55 +32,42 @@ public class AdminController {
     private jwtUtil jwtutil;
 
     @PostMapping("/login")
-    public ResponseEntity<serverResp> verifyUser(@Valid @RequestBody HashMap<String, String> credential) {
-        String email = "";
-        String password = "";
-        if (credential.containsKey("email")) {
-            email = credential.get("email");
-        }
-        if (credential.containsKey("password")) {
-            password = credential.get("password");
-        }
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        User loggedUser = userRepo.findByEmailAndUsertype(email, "admin");
-        serverResp resp = new serverResp();
-
+    public ResponseEntity<Response> verifyUser(@Valid @RequestBody User user) {
+        User loggedUser = userRepo.findByPhoneAndUsertype(user.getPhone(), "admin");
+        Response resp = new Response();
         if (loggedUser != null) {
-            if (passwordEncoder.matches(password, loggedUser.getPassword())) {
-                String jwtToken = jwtutil.createToken(email, password, "admin");
-                resp.setStatus("200");
-                resp.setMessage("SUCCESS");
-                resp.setAUTH_TOKEN(jwtToken);
-            } else {
-                resp.setStatus("500");
-                resp.setMessage("ERROR");
-            }
+            String jwtToken = jwtutil.createToken(user.getPhone(), "admin");
+            resp.setStatus("200");
+            resp.setMessage("SUCCESS");
+            resp.setAUTH_TOKEN(jwtToken);
+
         } else {
             resp.setStatus("500");
             resp.setMessage("ERROR");
         }
+        return new ResponseEntity<Response>(resp, HttpStatus.OK);
+    }
 
-        // if (passwordEncoder.matches(password, loggedUser.getPassword())) {
-        // String jwtToken = jwtutil.createToken(email, password, "admin");
-        // resp.setStatus("200");
-        // resp.setMessage("SUCCESS");
-        // resp.setAUTH_TOKEN(jwtToken);
-        // } else {
-        // resp.setStatus("500");
-        // resp.setMessage("ERROR");
-        // }
-        // User loggedUser = userRepo.findByEmailAndPasswordAndUsertype(email, password,
-        // "admin");
-        // serverResp resp = new serverResp();
-        // if (loggedUser != null) {
-        // String jwtToken = jwtutil.createToken(email, password, "admin");
-        // resp.setStatus("200");
-        // resp.setMessage("SUCCESS");
-        // resp.setAUTH_TOKEN(jwtToken);
-        // } else {
-        // resp.setStatus("500");
-        // resp.setMessage("ERROR");
-        // }
-        return new ResponseEntity<serverResp>(resp, HttpStatus.OK);
+    @PostMapping("/loginmail")
+    public ResponseEntity<Response> verifyMailUser(@Valid @RequestBody User user) {
+        // PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        User loggedUser = userRepo.findByEmailAndUsertype(user.getEmail(), "admin");
+        Response resp = new Response();
+        if (loggedUser != null) {
+            // if (passwordEncoder.matches(user.getPassword(), loggedUser.getPassword())) {
+            // String jwtToken = jwtutil.createMailToken(user.getEmail(), user.getPassword(), "admin");
+            String jwtToken = jwtutil.createToken(loggedUser.getPhone(), loggedUser.getUsertype());
+            resp.setStatus("200");
+            resp.setMessage("SUCCESS");
+            resp.setAUTH_TOKEN(jwtToken);
+            // } else {
+            // resp.setStatus("500");
+            // resp.setMessage("ERROR");
+            // }
+        } else {
+            resp.setStatus("500");
+            resp.setMessage("ERROR");
+        }
+        return new ResponseEntity<Response>(resp, HttpStatus.OK);
     }
 }

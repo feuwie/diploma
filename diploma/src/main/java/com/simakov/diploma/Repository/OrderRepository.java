@@ -1,8 +1,5 @@
 package com.simakov.diploma.Repository;
 
-import java.util.List;
-
-import com.simakov.diploma.Model.Cart;
 import com.simakov.diploma.Model.PlaceOrder;
 
 import org.springframework.data.jpa.repository.Modifying;

@@ -1,49 +1,28 @@
 package com.simakov.diploma.Controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.validation.Valid;
 
 import com.simakov.diploma.Model.AdminOrder;
 import com.simakov.diploma.Model.Cart;
-import com.simakov.diploma.Model.Payment;
 import com.simakov.diploma.Model.PlaceOrder;
 import com.simakov.diploma.Model.Product;
 import com.simakov.diploma.Model.User;
 import com.simakov.diploma.Repository.AdminOrderRepository;
 import com.simakov.diploma.Repository.CartRepository;
-import com.simakov.diploma.Repository.CategoryRepository;
 import com.simakov.diploma.Repository.OrderRepository;
 import com.simakov.diploma.Repository.ProductRepository;
-import com.simakov.diploma.Repository.UserRepository;
-import com.simakov.diploma.Response.cartResp;
-import com.simakov.diploma.Response.categoryResp;
-import com.simakov.diploma.Response.paymentResp;
-import com.simakov.diploma.Response.productResp;
-import com.simakov.diploma.Response.serverResp;
+import com.simakov.diploma.Response.Response;
 import com.simakov.diploma.Utilities.Validator;
 import com.simakov.diploma.Utilities.jwtUtil;
-import com.stripe.Stripe;
-import com.stripe.model.Charge;
-import com.stripe.model.PaymentIntent;
-import com.stripe.model.Token;
-import com.stripe.net.RequestOptions;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*")
@@ -66,10 +45,10 @@ public class OrderController {
     private jwtUtil jwtutil;
 
     @GetMapping("/makeorder")
-    public ResponseEntity<serverResp> makeOrder(@RequestHeader(name = "AUTH_TOKEN") String AUTH_TOKEN)
+    public ResponseEntity<Response> makeOrder(@RequestHeader(name = "AUTH_TOKEN") String AUTH_TOKEN)
             throws IOException {
 
-        serverResp resp = new serverResp();
+        Response resp = new Response();
         if (!Validator.isStringEmpty(AUTH_TOKEN) && jwtutil.checkToken(AUTH_TOKEN) != null) {
             try {
                 User loggedUser = jwtutil.checkToken(AUTH_TOKEN);
@@ -124,6 +103,8 @@ public class OrderController {
             resp.setStatus("500");
             resp.setMessage("Error");
         }
-        return new ResponseEntity<serverResp>(resp, HttpStatus.ACCEPTED);
+        return new ResponseEntity<Response>(resp, HttpStatus.ACCEPTED);
     }
+
+    
 }

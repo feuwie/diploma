@@ -1,0 +1,73 @@
+<!-- <body>
+    <div class="row all">
+        <div class="col-sm-12" style="text-align: center;">
+        </div>
+    </div>
+</body> -->
+
+
+
+<body>
+    <div class="container" *ngIf="tester">
+        <p>Мы отправили код на {{ registerForm.value.phone }}</p>
+        <button (click)="change()">Изменить</button>
+        <!-- <input type="text" [(ngModel)]="playerName"> -->
+        <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="config"></ng-otp-input>
+        <!-- <button (click)="send()">Отправить</button> -->
+        <p *ngIf="!vis"> Получить новый код можно через 00:<span *ngIf="timeLeft < 10">0</span>{{timeLeft}}</p>
+        <button (click)="register()" *ngIf="vis">Получить код заного</button>
+        <button (click)="typeChange('frsend')">Войти по почте</button>
+    </div>
+    <div class="container" *ngIf="!tester && !mail">
+        <div class="row">
+            <div class="offset-2 col-6">
+                <div class="card login shadow p-3 mb-5 bg-white rounded ">
+                    <div class="card-body">
+                        <form [formGroup]="registerForm" (ngSubmit)="register()">
+                            <!-- <div class="form-group">
+                                <input class="form-control" type="email" formControlName="email" placeholder="Email"
+                                    style="width:50%" required>
+                            </div> -->
+                            <div class="form-group">
+                                <input class="form-control" type="phone" formControlName="phone" placeholder="Телефон"
+                                    style="width:50%" required>
+                            </div>
+                            <!-- <div class="form-group">
+                                <input class="form-control" formControlName="username" placeholder="Username"
+                                    style="width:50%">
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" type="password" formControlName="password"
+                                    placeholder="Password" style="width:50%">
+                            </div> -->
+                            <input type="submit" class="btn btn-secondary align-right" value="Получить код">
+                        </form>
+                        <button (click)="typeChange()">Войти по почте</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" *ngIf="mail">
+        <div class="row">
+            <div class="offset-2 col-6">
+                <div class="card login shadow p-3 mb-5 bg-white rounded ">
+                    <div class="card-body">
+                        <form [formGroup]="mailForm" (ngSubmit)="logMail()">
+                            <div class="form-group">
+                                <input class="form-control" type="email" formControlName="email" placeholder="Email"
+                                    style="width:50%" required>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" type="password" formControlName="password"
+                                    placeholder="Password" style="width:50%">
+                            </div>
+                            <input type="submit" class="btn btn-secondary align-right" value="Войти">
+                        </form>
+                        <button (click)="typeChange()">Войти по телефону</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

@@ -1,4 +1,101 @@
-<div *ngIf="receivedUser">
-  <p>{{ receivedUser.name }}</p>
-  <p>{{ receivedUser.email }}</p>
+<button (click)="isInfo = true; isOrder = false;">Личная информация</button>|<button
+    (click)="isOrder = true; isInfo = false; ord()">Заказы</button><br>
+<div *ngIf="isInfo">
+    <strong>Учетная запись</strong>
+    <p>Телефон</p>
+
+    <div *ngIf="receivedUser?.phone && !phones && !tester">
+        <p>{{ receivedUser?.phone }}</p>
+        <button (click)="phones = true">Изменить</button>
+    </div>
+    <form *ngIf="phones" [formGroup]="changePhone" (ngSubmit)="changePhones()">
+        <div class="form-group">
+            <input class="form-control" type="phone" formControlName="phone" placeholder="Введите телефон"
+                style="width:50%" required>
+        </div>
+        <input type="submit" class="btn btn-secondary align-right" value="Добавить">
+        <button (click)="phones = false;">Отменить</button>
+    </form>
+
+    <div class="container" *ngIf="tester">
+        <p>Мы отправили код на {{ changePhone.value.phone }}</p>
+        <button (click)="changer()">Изменить</button>
+        <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="config"></ng-otp-input>
+        <p *ngIf="!vis"> Получить новый код можно через 00:<span *ngIf="timeLeft < 10">0</span>{{timeLeft}}</p>
+        <button (click)="changePhones()" *ngIf="vis">Получить код заного</button>
+    </div>
+
+    <p>Почта</p>
+    <div *ngIf="receivedUser?.email">
+        <p>{{ receivedUser?.email }}</p>
+        <button>Изменить</button>
+    </div>
+    <div *ngIf="!receivedUser?.email">
+        <p>Не указано</p>
+        <button>Добавить</button>
+    </div>
+    <p>Пароль</p>
+    <div *ngIf="receivedUser?.password">
+        <p>{{ "*".repeat(receivedUser?.password.length-1)+receivedUser?.password[receivedUser?.password.length-1] }}</p>
+        <button>Изменить</button>
+    </div>
+    <div *ngIf="!receivedUser?.password">
+        <input type="text" placeholder="Введите пароль"><br>
+        <button>Добавить</button>
+    </div>
+    <strong>Личные данные</strong>
+    <p>ФИО</p>
+    <div *ngIf="!bio">
+        <div *ngIf="receivedUser?.fullname">
+            <p>{{ receivedUser?.fullname }}</p>
+        </div>
+        <div *ngIf="!receivedUser?.fullname">
+            <p>Не указано</p>
+        </div>
+    </div>
+    <div *ngIf="bio">
+        <input type="text" [(ngModel)]="change.fullname">
+    </div>
+    <p>Дата рождения</p>
+    <div *ngIf="!bio">
+        <div *ngIf="receivedUser?.dob">
+            <p>{{ receivedUser?.dob | date: 'dd/MM/yyyy' }} года</p>
+        </div>
+        <div *ngIf="!receivedUser?.dob">
+            <p>Не указано</p>
+        </div>
+    </div>
+    <div *ngIf="bio">
+        <input type="date" [(ngModel)]="change.dob">
+    </div>
+    <p>Пол</p>
+    <div *ngIf="!bio">
+        <div *ngIf="receivedUser?.gender">
+            <p>{{ receivedUser?.gender }}</p>
+        </div>
+        <div *ngIf="!receivedUser?.gender">
+            <p>Не указано</p>
+        </div>
+    </div>
+    <div *ngIf="bio">
+        <div *ngIf="receivedUser?.gender">
+            <input type="radio" value="Мужской" [(ngModel)]="change.gender">Мужской
+            <input type="radio" value="Женский" [(ngModel)]="change.gender">Женский
+        </div>
+    </div>
+    <button *ngIf="!bio" (click)="bio = true">Изменить личные данные</button>
+    <button *ngIf="bio" (click)="add()">Обновить</button>
+    <button *ngIf="bio == true" (click)="canc()">Отмена</button><br>
+    <button (click)="delete()">Удалить профиль</button>
+</div>
+
+<div *ngIf="isOrder">
+    <div *ngFor="let item of groups">
+        <strong>Ваш заказ номер {{ item.orderId }}</strong>
+        <div *ngFor="let one of item.item">
+            <p>{{ one.productTitle }}</p>
+            <p>{{ one.productQuantity }} штуки</p>
+            <p>({{ one.productPrice }} рублей)</p>
+        </div>
+    </div>
 </div>
